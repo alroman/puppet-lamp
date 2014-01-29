@@ -10,24 +10,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "vagrant-centos6.5-64"
+  config.vm.box = "vagrant-centos6.5-64-behat"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "https://test.ccle.ucla.edu/vagrant/vagrant-centos6.5-64.box"
+  config.vm.box_url = "https://test.ccle.ucla.edu/vagrant/vagrant-centos6.5-64-behat.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network :forwarded_port, guest: 80, host: 8080
+  # accessing "localhost:9090" will access port 80 on the guest machine.
+  config.vm.network :forwarded_port, guest: 80, host: 9090
+  # config.vm.network :forwarded_port, guest: 22, host: 2222, disabled: true
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network :private_network, ip: "192.168.33.10"
+  # config.vm.network :private_network, ip: "192.168.33.11"
   
   # Use NFS to speed up disk access.
-  nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/
-  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", :nfs => nfs_setting
+  # nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/
+  # config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", :nfs => nfs_setting
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -50,7 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   config.vm.provider :virtualbox do |vb|
      vb.gui = true
-  #   # Use VBoxManage to customize the VM. For example to change memory:
+     # Give VM extra memory to run GUI
      vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
   #
@@ -79,6 +80,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     puppet.manifests_path = "manifests"
     puppet.manifest_file  = "site.pp"
   end
+
+  # config.vm.provision "shell" do |s|
+  #   s.inline = "yum -y groupinstall \"X Window System\" \"Desktop\" \"Fonts\" \"General Purpose Desktop\""
+  # end
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding

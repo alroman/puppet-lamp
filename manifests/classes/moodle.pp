@@ -27,9 +27,9 @@ class moodle {
 	package { "xorg-x11-server-Xvfb": ensure => installed } 
 	
 	# create link to moodle source
-	file { "/var/www/html/moodle":
+	file { "/var/www/html/behat":
 		ensure => link,
-		target => "/vagrant/moodle"	
+		target => "/vagrant/behat"	
 	}
 	
 	# make sure aspell is installed
